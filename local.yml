@@ -111,7 +111,7 @@
 
   - name: Copy Dotfiles
     ansible.builtin.copy:
-      src: Files/dotfiles/
+      src: "{{ playbook_dir }}/Files/dotfiles/"
       dest: /home/zar
       owner: zar
       group: zar
@@ -148,7 +148,7 @@
     vars:
       texlive_release: 2022
     ansible.builtin.template:
-      src: Files/texlive.profile.j2
+      src: "{{ playbook_dir }}/Files/texlive.profile.j2"
       dest: /usr/local/texlive/install-tl-2*/texlive.profile
       owner: tladmin
       group: tladmin
@@ -167,7 +167,7 @@
 
   - name: Add TeX Live to PATH
     ansible.builtin.copy:
-      src: Files/texlive.sh
+      src: "{{ playbook_dir }}/Files/texlive.sh"
       dest: /etc/profile.d/texlive.sh
       owner: root
       group: root
@@ -175,7 +175,7 @@
 
   - name: Copy TeX Live dummy package
     ansible.builtin.copy:
-      src: Files/texlive-dummy-2022-1.fc36.noarch.rpm
+      src: "{{ playbook_dir }}/Files/texlive-dummy-2022-1.fc36.noarch.rpm"
       dest: /home/zar/Downloads/texlive-dummy-2022-1.fc36.noarch.rpm
       owner: zar
       group: zar
@@ -281,7 +281,7 @@
   - name: Change grub-btrfs config
     ansible.builtin.copy:
       dest: /etc/default/grub-btrfs/config
-      src: Files/config
+      src: "{{ playbook_dir }}/Files/config"
       mode: 0644
 
   - name: Update grub.cfg again

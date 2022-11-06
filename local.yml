@@ -100,7 +100,7 @@
     ansible.builtin.git:
       repo: 'https://github.com/syl20bnr/spacemacs.git'
       dest: /home/zar/.emacs.d
-      version: latest
+      version: HEAD
 
   - name: Download Vimplug
     ansible.builtin.get_url:
@@ -271,7 +271,7 @@
     ansible.builtin.git:
       repo: 'https://github.com/Antynea/grub-btrfs.git'
       dest: /home/zar/Downloads/grub-btrfs
-      version: latest
+      version: HEAD
 
   - name: Install grub-btrfs
     community.general.make:

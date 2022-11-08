@@ -148,6 +148,7 @@
     ansible.builtin.dnf:
       name: /home/zar/Downloads/texlive-dummy-2022-1.fc36.noarch.rpm
       state: present
+      disable_gpg_check: yes
 
   - name: Unpack texlab #evtl. nachher löschen
     ansible.builtin.unarchive:

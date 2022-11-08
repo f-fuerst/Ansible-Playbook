@@ -68,7 +68,7 @@
       dest: /home/zar
       owner: zar
       group: zar
-      mode: 0644
+      mode: preserve
       remote_src: yes
 
   - name: Create tladmin group

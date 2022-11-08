@@ -123,6 +123,11 @@
       mode: 0644
       remote_src: yes
 
+  - name: Create tladmin group
+    ansible.builtin.group:
+      name: tladmin
+      state: present
+
   - name: Create tladmin user
     ansible.builtin.user:
       name: tladmin
@@ -150,12 +155,16 @@
     become: true
     become_user: tladmin
 
+  - name: Get TeX Live installer folder
+    ansible.builtin.shell: ls -d /usr/local/texlive/install-tl-2*
+    register: TLinstaller_folder
+
   - name: Set TeX Live Installer Profile
     vars:
       texlive_release: 2022
     ansible.builtin.template:
       src: "{{ playbook_dir }}/Files/texlive.profile.j2"
-      dest: /usr/local/texlive/install-tl-2*/texlive.profile
+      dest: "{{ TLinstaller_folder.stdout }}/texlive.profile"
       owner: tladmin
       group: tladmin
       mode: u=rw,g=r,o=r

@@ -135,7 +135,7 @@
       system: yes
       home: /usr/local/texlive
       shell: /bin/sh
-      password: "{{ tladmin_password }}"
+      password: "{{ tladmin_password | password_hash('sha512') }}"
     no_log: true
 
   - name: Download TeX Live Installer

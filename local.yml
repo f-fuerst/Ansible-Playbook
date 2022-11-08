@@ -25,47 +25,6 @@
         - perl-sigtrap
       state: present
 
-  - name: Import Key for RPMFusion free repo
-    ansible.builtin.rpm_key:
-      key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
-      fingerprint: E9A4 91A3 DE24 7814 E7E0 67EA E06F 8ECD D651 FF2E
-
-  - name: Import Key for RPMFusion non-free repo
-    ansible.builtin.rpm_key:
-      key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
-      fingerprint: 79BD B88F 9BBF 7391 0FD4 095B 6A2A F961 9484 3C65
-
-  - name: Install RPMFusion repo
-    ansible.builtin.dnf:
-      name:
-        - "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_version }}.noarch.rpm"
-        - "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_version }}.noarch.rpm"
-      state: present
-
-  - name: Install appstream data from RPMFusion
-    ansible.builtin.dnf:
-      name: '@core'
-      state: present
-
-  - name: Install codecs from RPMFusion
-    ansible.builtin.dnf:
-      name: '@multimedia'
-      install_weak_deps: no
-      exclude: PackageKit-gstreamer-plugin
-      state: present
-
-  - name: Install VLC Media Player and ffmpegthumbs
-    ansible.builtin.dnf:
-      name:
-        - vlc
-        - ffmpegthumbs
-      state: present
-
-  - name: Install KeePassXC
-    ansible.builtin.dnf:
-      name: keepassxc
-      state: present
-
   - name: Installing epdfinfo Server Prerequisites for Spacemacs PDF-Layer
     ansible.builtin.dnf:
       name:
@@ -83,17 +42,6 @@
       name:
         - gvim
         - emacs
-      state: present
-
-  - name: Enable Flathub repo
-    community.general.flatpak_remote:
-      name: flathub
-      state: present
-      flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
-
-  - name: Install Cider flatpak
-    community.general.flatpak:
-      name: sh.cider.Cider
       state: present
 
   - name: Install Spacemacs

@@ -3,6 +3,7 @@
   connection: local
   become: true
 
+  tasks:
   - name: Install Snapper
     ansible.builtin.dnf:
       name:
@@ -86,6 +87,8 @@
     community.general.make:
       chdir: /home/zar/Downloads/grub-btrfs
       target: install
+      params:
+        INITCPIO: true
 
   - name: Change grub-btrfs config
     ansible.builtin.copy:

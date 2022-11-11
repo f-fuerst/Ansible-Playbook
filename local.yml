@@ -81,7 +81,7 @@
     ansible.builtin.git:
       repo: 'https://github.com/Antynea/grub-btrfs.git'
       dest: /home/zar/Downloads/grub-btrfs
-      version: 4580c0fa2cd14a1359bb66799d9892ea257fafc5
+      version: c78bd257849bef35eac02d6f53abd5ee0be35e62
 
   - name: Install grub-btrfs
     community.general.make:

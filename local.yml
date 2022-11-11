@@ -81,7 +81,7 @@
     ansible.builtin.git:
       repo: 'https://github.com/Antynea/grub-btrfs.git'
       dest: /home/zar/Downloads/grub-btrfs
-      version: HEAD
+      version: Add-systemd-volatile
 
   - name: Install grub-btrfs
     community.general.make:

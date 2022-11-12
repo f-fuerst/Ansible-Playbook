@@ -87,8 +87,6 @@
     community.general.make:
       chdir: /home/zar/Downloads/grub-btrfs
       target: install
-#      params:
-#        INITCPIO: true
 
   - name: Change grub-btrfs config
     ansible.builtin.copy:
@@ -103,7 +101,7 @@
 
   - name: Enable grub-btrfsd service
     ansible.builtin.systemd:
-      name: grub-btrfsd
+      name: grub-btrfs.path
       masked: no
       enabled: yes
       state: started

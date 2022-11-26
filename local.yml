@@ -47,6 +47,11 @@
       name: '@core'
       state: present
 
+  - name: Remove ffmpeg-free that is automatically installed in Fedora 37
+    ansible.builtin.dnf:
+      name: ffmpeg-free
+      state: absent
+
   - name: Install codecs from RPMFusion
     ansible.builtin.dnf:
       name: '@multimedia'

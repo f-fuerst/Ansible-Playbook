@@ -211,6 +211,12 @@
       mode: 0755
       remote_src: yes
 
+  - name: Change permissions on texlive folder
+    ansible.builtin.file:
+      path: /usr/local/texlive
+      mode: 0755
+      state: directory
+
   - name: Install Snapper
     ansible.builtin.dnf:
       name:

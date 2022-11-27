@@ -47,16 +47,12 @@
       name: '@core'
       state: present
 
-  - name: Remove ffmpeg-free that is automatically installed in Fedora 37
-    ansible.builtin.dnf:
-      name: ffmpeg-free
-      state: absent
-
   - name: Install codecs from RPMFusion
     ansible.builtin.dnf:
       name: '@multimedia'
       install_weak_deps: no
       exclude: PackageKit-gstreamer-plugin
+      allowerasing: true
       state: present
 
   - name: Install VLC Media Player and ffmpegthumbs
@@ -66,9 +62,11 @@
         - ffmpegthumbs
       state: present
 
-  - name: Install KeePassXC
+  - name: Install miscellaneous packages
     ansible.builtin.dnf:
-      name: keepassxc
+      name:
+        - keepassxc
+        - rclone
       state: present
 
   - name: Installing epdfinfo Server Prerequisites for Spacemacs PDF-Layer

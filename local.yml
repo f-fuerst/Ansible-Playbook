@@ -62,6 +62,16 @@
         - ffmpegthumbs
       state: present
 
+  - name: Uninstall mesa-va-drivers without pateted codecs support
+    ansible.builtin.dnf:
+      name: mesa-va-drivers
+      state: absent
+
+  - name: Install mesa-va-drivers-freeworld
+    ansible.builtin.dnf:
+      name: mesa-va-drivers-freeworld
+      state: present
+
   - name: Install miscellaneous packages
     ansible.builtin.dnf:
       name:

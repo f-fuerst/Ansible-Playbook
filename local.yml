@@ -23,6 +23,7 @@
         - libnsl
         - perl-Unicode-Normalize
         - perl-sigtrap
+        - perl-Time-HiRes
       state: present
 
   - name: Import Key for RPMFusion free repo
@@ -82,12 +83,12 @@
   - name: Installing epdfinfo Server Prerequisites for Spacemacs PDF-Layer
     ansible.builtin.dnf:
       name:
-        - make
+        - autoconf
         - automake
-        - gcc
-        - libpng-devel
         - zlib-devel
+        - poppler-devel
         - poppler-glib-devel
+        - libpng-devel
         - ImageMagick
       state: present
 
@@ -153,7 +154,7 @@
 
   - name: Download TeX Live Installer
     ansible.builtin.get_url:
-      url: https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+      url: https://ftp.rrze.uni-erlangen.de/ctan/systems/texlive/tlnet/install-tl-unx.tar.gz
       owner: tladmin
       group: tladmin
       dest: /usr/local/texlive
@@ -174,7 +175,7 @@
 
   - name: Set TeX Live Installer Profile
     vars:
-      texlive_release: 2022
+      texlive_release: 2023
     ansible.builtin.template:
       src: "{{ playbook_dir }}/Files/texlive.profile.j2"
       dest: "{{ TLinstaller_folder.stdout }}/texlive.profile"
@@ -187,7 +188,7 @@
     ansible.builtin.shell: >
       cd /usr/local/texlive/install-tl-2* ;
       ./install-tl -profile {{ texlive_profile.dest }} -repository {{ texlive_mirror }} ;
-      grep -q "Welcome to TeX Live!" /usr/local/texlive/2022/install-tl.log
+      grep -q "Welcome to TeX Live!" /usr/local/texlive/2023/install-tl.log
     become: true
     become_user: tladmin
     register: tl_install
@@ -218,7 +219,7 @@
   - name: Unpack texlab #evtl. nachher löschen
     ansible.builtin.unarchive:
       src: https://github.com/latex-lsp/texlab/releases/latest/download/texlab-x86_64-linux.tar.gz
-      dest: /usr/local/texlive/2022/bin/x86_64-linux/
+      dest: /usr/local/texlive/2023/bin/x86_64-linux/
       owner: tladmin
       group: tladmin
       mode: 0755
@@ -289,7 +290,7 @@
   - name: Modify grub.cfg in EFI directory
     ansible.builtin.lineinfile:
       path: /boot/efi/EFI/fedora/grub.cfg
-      line: 'btrfs_relative_path="yes"'
+      line: 'set btrfs_relative_path="yes"'
       insertbefore: BOF
       state: present
 
@@ -303,31 +304,3 @@
     register: grub_hide
     changed_when: grub_hide.rc == 0
 
-  - name: Clone grub-btrfs repo
-    ansible.builtin.git:
-      repo: 'https://github.com/Antynea/grub-btrfs.git'
-      dest: /home/zar/Downloads/grub-btrfs
-      version: c78bd257849bef35eac02d6f53abd5ee0be35e62
-
-  - name: Install grub-btrfs
-    community.general.make:
-      chdir: /home/zar/Downloads/grub-btrfs
-      target: install
-
-  - name: Change grub-btrfs config
-    ansible.builtin.copy:
-      dest: /etc/default/grub-btrfs/config
-      src: "{{ playbook_dir }}/Files/config"
-      mode: 0644
-
-  - name: Update grub.cfg again
-    ansible.builtin.command: grub2-mkconfig -o /boot/grub2/grub.cfg
-    register: grub2_config_btrfs
-    changed_when: grub2_config_btrfs.rc == 0
-
-  - name: Enable grub-btrfsd service
-    ansible.builtin.systemd:
-      name: grub-btrfs.path
-      masked: no
-      enabled: yes
-      state: started

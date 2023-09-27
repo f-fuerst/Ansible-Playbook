@@ -1,6 +1,6 @@
 # /etc/profile.d/texlive.sh
 
-TeX_dir="/usr/local/texlive/2022"
+TeX_dir="/usr/local/texlive/2023"
 
 if [[ $UID != 0 && -d $TeX_dir/bin/x86_64-linux ]]; then
   case ":$PATH:" in
